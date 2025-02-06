@@ -2,6 +2,7 @@ import axios from "axios";
 
 const USERS = 'http://localhost:8080/api/v1/userAll';
 const LOGIN_URL = 'http://localhost:8080/api/v1/token';
+const ADD_USER = 'http://localhost:8080/api/v1/addUser';
 
 class UserService {
   // Obtener los usuarios
@@ -13,6 +14,34 @@ class UserService {
       }
     });
   }
+
+  addUser(user) {
+    const token = localStorage.getItem('authToken'); // Recuperar el token del almacenamiento local
+  
+    return axios.post(ADD_USER, 
+      { 
+        nombre: user.nombre, 
+        correo: user.correo 
+      }, 
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json', // Especificar que estamos enviando JSON
+        }
+      }
+    )
+    .then(response => {
+      console.log('Usuario agregado', response.data);
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error('Error al agregar el usuario:', error.response.data); // Imprimir la respuesta del error
+      } else {
+        console.error('Error en la solicitud:', error.message);
+      }
+    });
+  }
+  
 
   // Generar el token
   async generateToken(email) {
