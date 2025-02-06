@@ -3,6 +3,7 @@ import axios from "axios";
 const USERS = 'http://localhost:8080/api/v1/userAll';
 const LOGIN_URL = 'http://localhost:8080/api/v1/token';
 const ADD_USER = 'http://localhost:8080/api/v1/addUser';
+const RESERVAS = 'http://localhost:8080/api/v1/reservaAll';
 
 class UserService {
   // Obtener los usuarios
@@ -14,6 +15,17 @@ class UserService {
       }
     });
   }
+
+  // Obtener las reservas
+  getReservas() {
+    const token = localStorage.getItem('authToken');  // Recuperar el token del almacenamiento local
+    return axios.get(RESERVAS, {
+      headers: {
+        'Authorization': `Bearer ${token}`  // Incluir el token en los encabezados
+      }
+    });
+  }
+
 
   addUser(user) {
     const token = localStorage.getItem('authToken'); // Recuperar el token del almacenamiento local
